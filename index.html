@@ -3,166 +3,146 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Naivas Demo: from messy branch data to reports you can trust</title>
+<title>Naivas Demo: watch messy branch data get fixed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#10131a;--mute:#5d6470;--rule:#d9dce1;--red:#d11f2f;--green:#17794a;--tint:#f4f5f7}
+:root{--ink:#10131a;--mute:#5d6470;--rule:#d9dce1;--red:#d11f2f;--green:#17794a;--tint:#f4f5f7;--amber:#a86b00}
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:var(--ink);font:17px/1.6 Archivo,system-ui,sans-serif;font-variant-numeric:tabular-nums}
 .w{max-width:1040px;margin:0 auto;padding:0 22px}
 .top{border-bottom:3px solid var(--ink);padding:14px 0;font-size:14px}
 .top .w{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h1{font-size:clamp(36px,6vw,70px);line-height:1.03;font-weight:800;letter-spacing:-.03em;margin:44px 0 16px;max-width:15ch}
-h2{font-size:27px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px}
-.sub{max-width:62ch;color:var(--mute);font-size:19px;margin:0}
-section{padding:44px 0 8px;margin-top:40px;border-top:1px solid var(--rule)}
-.lead{max-width:64ch;color:var(--mute);margin:0 0 20px}
-.big{display:flex;flex-wrap:wrap;gap:14px 44px;margin:22px 0 8px}
-.big div{min-width:150px;max-width:230px}.big b{display:block;font-size:34px;font-weight:800;line-height:1.1}.big span{font-size:14px;color:var(--mute)}
-.bad{color:var(--red)}.good{color:var(--green)}
-table{width:100%;border-collapse:collapse;font-size:15px}
-caption{text-align:left;font-size:14px;color:var(--mute);padding-bottom:8px}
-thead th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);text-align:right;padding:8px;font-weight:600}
-td{text-align:right;padding:9px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
-thead th:first-child,td:first-child,.l,th.l{text-align:left}
-tr.tot td{border-top:2px solid var(--ink);font-weight:800}
-tr.un td{background:#fdecee}
+h1{font-size:clamp(34px,5.6vw,62px);line-height:1.04;font-weight:800;letter-spacing:-.03em;margin:40px 0 14px;max-width:17ch}
+h2{font-size:25px;font-weight:800;margin:0 0 8px}
+.sub{max-width:64ch;color:var(--mute);font-size:18px;margin:0 0 18px}
+ol.how{margin:0 0 22px;padding-left:22px;max-width:64ch}ol.how li{margin:4px 0}
+.btn{font:inherit;font-weight:800;font-size:18px;padding:14px 26px;border:0;cursor:pointer;background:var(--ink);color:#fff}
+.btn.go{background:var(--green)}.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+section{margin-top:44px;padding-top:30px;border-top:1px solid var(--rule)}
+.kpis{display:flex;flex-wrap:wrap;gap:12px 44px;margin:6px 0 20px}.kpis div{min-width:140px}
+.kpis b{display:block;font-size:34px;font-weight:800;line-height:1.1}.kpis span{font-size:14px;color:var(--mute)}
+.cols{display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:start}
+ul.wrong{margin:0;padding-left:18px}ul.wrong li{margin:7px 0;font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+thead th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);text-align:left;padding:7px 8px;font-weight:600;white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+td.n,th.n{text-align:right}
+.bad{color:var(--red);font-weight:600}.ok{color:var(--green);font-weight:600}.warn{color:var(--amber);font-weight:600}
+small{display:block;color:var(--mute);font-weight:400;font-size:12px}
 .scroll{overflow-x:auto}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:34px}
-.note{background:var(--tint);padding:14px 16px;border-left:4px solid var(--ink);font-size:15px;max-width:72ch;margin-top:18px}
-select{font:inherit;padding:8px 10px;border:1.5px solid var(--ink);background:#fff;border-radius:0;max-width:100%}
-ol.steps{padding-left:20px;margin:0}ol.steps li{margin:10px 0}
-.act{border-top:2px solid var(--ink);padding:14px 0}.act b{display:block;font-size:18px}
+.bar{height:8px;background:var(--rule);min-width:80px}.bar i{display:block;height:100%;background:var(--ink);transition:width .5s}
+.act{margin:20px 0 0}
+.note{background:var(--tint);border-left:4px solid var(--ink);padding:12px 16px;font-size:15px;max-width:72ch;margin-top:16px}
+.links a{color:var(--ink);margin-right:18px}
 footer{border-top:3px solid var(--ink);margin-top:50px;padding:20px 0 50px;font-size:14px;color:var(--mute)}
 footer a{color:var(--ink)}
-@media(max-width:800px){.cols{grid-template-columns:1fr}}
+tr.new{animation:f .6s}@keyframes f{from{background:#e6f4ec}to{background:transparent}}
+@media(max-width:820px){.cols{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){tr.new{animation:none}.bar i{transition:none}}
 </style>
 </head>
 <body>
 <div class="top"><div class="w"><strong>Naivas Demo</strong><span>Practice data made up for this demo. Not Naivas's real numbers.</span></div></div>
 <div class="w">
-<h1>Same sales. Two different profit reports.</h1>
-<p class="sub">In a chain with 100+ branches, product codes, units and prices get recorded in slightly different ways. The report then shows the wrong profit, and analysts lose days fixing files. This demo takes a set of messy branch sales, cleans it automatically, and shows the report before and after.</p>
-<p class="sub" style="font-size:16px;margin-top:10px">One <b>sales line</b> below means one product's sales at one branch in one week.</p>
-<div class="big" id="big"></div>
+<h1>Watch messy branch data get fixed</h1>
+<p class="sub">When a retailer grows branch by branch, the same product gets recorded in different ways and the profit report goes wrong. Here are 3,840 practice sales lines from 12 branches. Try it in three clicks.</p>
+<ol class="how"><li>Click <b>Load the data</b> to see the mess.</li><li>Click the green <b>Clean it</b> button and watch the profit margin and the "Unmapped" sales change at each step.</li><li>Click <b>Load the data again</b> to see exactly what was fixed.</li></ol>
+<button class="btn" id="load">1. Load the data</button>
 
-<section><h2>1. The problem: seven kinds of mistake</h2>
-<p class="lead">These were added to the practice data on purpose, at realistic rates, so we know exactly where they are.</p>
-<div class="scroll"><table id="defs"></table></div>
+<section id="s1" hidden>
+<h2>Here is the data, straight from the branches</h2>
+<p class="sub" style="font-size:16px">One sales line is one product's sales at one branch in one week. This is a short sample with the mistakes marked in red. The numbers below cover all 3,840 lines.</p>
+<div class="kpis"><div><b id="k1" class="bad"></b><span>profit margin in the report</span></div><div><b id="k2"></b><span>sales in "Unmapped" (no product found, so no cost, so it looks like pure profit)</span></div><div><b id="k3"></b><span>total sales</span></div></div>
+<div class="cols"><div><b>What's wrong</b><ul class="wrong"><li>The same product's code is written different ways</li><li>Some quantities are in dozens or litres, not items</li><li>A price was keyed ten times too high</li><li>Some codes don't exist, and some quantities are negative</li><li>The system's cost is out of date for 8 products</li></ul></div>
+<div class="scroll"><table id="t1"></table></div></div>
+<p class="act"><button class="btn go" id="clean">2. Clean it</button></p>
 </section>
 
-<section><h2>2. What the mistakes do to the report</h2>
-<p class="lead">The raw report finds each sale's cost by exact product code. When the code doesn't match, the sale lands in "Unmapped" with no cost, so it looks like pure profit.</p>
-<div class="scroll"><table id="cmp"><caption>Eight weeks, twelve branches, forty products. Sales that differ by more than 5% are in red. KSh = Kenya shillings, M = millions.</caption></table></div>
+<section id="s2" hidden>
+<h2>Cleaning, one step at a time</h2>
+<p class="sub" style="font-size:16px">Profit margin = (sales − cost) ÷ sales. Each step fixes one kind of mistake and the report is worked out again.</p>
+<div class="scroll"><table id="t2"></table></div>
+<p class="act" id="again" hidden><button class="btn" id="reload">3. Load the data again</button></p>
 </section>
 
-<section><h2>3. What this does to fix it</h2>
-<div class="cols"><div>
-<ol class="steps">
-<li><b>Match every code.</b> <i>nv-1042</i>, <i>1042-NV</i> and <i>NV1042</i> are all turned into <i>NV-1042</i> and matched to the product list.</li>
-<li><b>Put units back to one standard.</b> Dozens become single items, and litres become the pack count.</li>
-<li><b>Catch wrong prices.</b> A price ten times the shelf price is corrected.</li>
-<li><b>Use the supplier's latest cost.</b> Where the system's cost is out of date, the supplier's cost is used. <span id="cm"></span></li>
-<li><b>Don't guess the rest.</b> Unknown codes and negative quantities go to a person, with their value shown.</li>
-</ol></div>
-<div><p style="margin-top:0"><b>See it for one product.</b> Pick a product to see every way its code was written, all matched back to the right one.</p>
-<select id="pick" aria-label="Product"></select><div class="scroll" style="margin-top:12px"><table id="mx"></table></div></div></div>
+<section id="s3" hidden>
+<h2>The same data, after cleaning</h2>
+<p class="sub" style="font-size:16px">Green cells were fixed, with the old value underneath. Amber lines can't be fixed safely, so they go to a person.</p>
+<div class="scroll"><table id="t3"></table></div>
+<div class="kpis" id="proof" style="margin-top:24px"></div>
+<p class="note">Some code typos land on a different real product, so they look valid and rules can't catch them. The next rule to add is a check against each product's typical price. Real data is messier than this, so on real files I would tune the rules first.</p>
+<p class="links" style="margin-top:18px"><b>Check the work:</b> <a href="#" id="d1">Download cleaned data (CSV)</a> <a href="#" id="d2">Download the review list (CSV)</a></p>
+<p style="color:var(--mute);font-size:15px;max-width:66ch">The files behind this page are in the repository: <code>data/</code> holds the raw CSVs, <code>generate_data.py</code> creates them, and <code>clean.py</code> applies the same rules as this page and prints the same numbers.</p>
 </section>
 
-<section><h2>4. Did it catch the mistakes?</h2>
-<p class="lead">Because we know every planted mistake, we can check the cleaning against the answers.</p>
-<div class="scroll"><table id="score"></table></div>
-<div class="big" id="pr"></div>
-<p class="note">Some mistakes can't be caught by rules. About one in seven wrong codes was a typo that lands on a different real product, so it looks valid. Catching those needs an extra check against typical price or sales for that product, which is the next rule to add. Real data is also messier than this demo, so real scores would be lower and the rules would need tuning.</p>
-</section>
-
-<section><h2>5. What the team can do next</h2>
-<p class="lead">With numbers they can trust, the work moves from fixing files to making decisions.</p>
-<div id="acts"></div>
-</section>
-
-<footer><div class="w" style="padding:0">Built by Tabitha Chelagat, Business Intelligence Analyst, Nairobi. <a href="mailto:chelagattabitha7@gmail.com">chelagattabitha7@gmail.com</a> · +254 708 152 411. The data is generated in your browser from a fixed starting number, so you see the same figures every visit.</div></footer>
+<footer><div class="w" style="padding:0">Built by Tabitha Chelagat, Business Intelligence Analyst, Nairobi. <a href="mailto:chelagattabitha7@gmail.com">chelagattabitha7@gmail.com</a> · +254 708 152 411</div></footer>
 </div>
 <script>
-function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-const R=rng(20261030);
-const CAT={"Beverages":["Soda 500ml","Juice 1L","Water 1.5L","Soda 2L","Tea 100s"],"Dairy":["Milk 500ml","Milk 1L","Yoghurt 500ml","Butter 250g","Cheese 200g"],
-"Bakery":["Bread 400g","Bread 800g","Buns 6s","Cake slice","Doughnut"],"Cooking oils":["Cooking oil 1L","Cooking oil 3L","Margarine 500g","Ghee 500g","Cooking oil 5L"],
-"Household":["Detergent 1kg","Bleach 750ml","Dish soap 500ml","Tissue 10s","Mop head"],"Personal care":["Soap bar","Lotion 400ml","Toothpaste 100ml","Shampoo 400ml","Deodorant"],
-"Snacks":["Crisps 100g","Biscuits 200g","Popcorn 150g","Nuts 250g","Chocolate 100g"],"Grains":["Maize flour 2kg","Rice 2kg","Wheat flour 2kg","Sugar 2kg","Beans 1kg"]};
-const MG={"Beverages":.2,"Dairy":.14,"Bakery":.28,"Cooking oils":.1,"Household":.3,"Personal care":.35,"Snacks":.25,"Grains":.08};
-const BR=12,P=[];let n=1000,i=0;
-for(const c in CAT)CAT[c].forEach(nm=>{const price=Math.round(60+R()*540),sup=Math.round(price*(1-MG[c]*(.8+R()*.4)));
- const m=nm.match(/(\d+(?:\.\d+)?)(ml|L)\b/);
- P.push({code:"NV-"+(n++),name:nm,cat:c,price,sup,erp:i++%5===2?Math.round(sup*(.72+R()*.16)):sup,base:20+R()*80,ml:m?(m[2]==="L"?parseFloat(m[1])*1000:parseFloat(m[1])):0})});
-const M={};P.forEach(p=>M[p.code]=p);
-const VAR=[d=>"nv-"+d,d=>d+"-NV",d=>"NV"+d,d=>"NV "+d];
-const rows=[];
-for(let b=0;b<BR;b++){const bs=.8+R()*.4;for(let w=0;w<8;w++)P.forEach(p=>{
- const q=Math.max(1,Math.round(p.base*bs*(.8+R()*.4)*(R()<.06?2.2:1)));const d=p.code.slice(3),r=R();
- let def=null,code=p.code,qty=q,uom="EA",price=p.price,tq=q;
- if(r<.11){def="variant";code=VAR[Math.floor(R()*4)](d);if(R()<.15){const sw=d.slice(0,2)+d[3]+d[2];if(M["NV-"+sw]&&sw!==d)code="NV-"+sw}}
- else if(r<.135){def="dz";tq=Math.max(1,Math.round(q/12))*12;qty=tq/12;uom="DZ"}
- else if(r<.16){if(p.ml){def="unitL";qty=q*p.ml/1000;uom="L"}}
- else if(r<.175){if(R()<.4){def="price10";price=p.price*10}}
- else if(r<.19){def="orphan";code="NV-9"+Math.floor(100+R()*899)}
- else if(r<.2){def="neg";qty=-q}
- rows.push({code,qty,uom,price,tc:p.code,tq,def})})}
+const $=id=>document.getElementById(id);
 const fmt=x=>Math.abs(x)>=1e6?(x/1e6).toFixed(2)+"M":Math.round(x).toLocaleString();
 const pc=x=>(x*100).toFixed(1)+"%";
-const add=(o,k,rev,gp)=>{const x=o[k]||(o[k]={rev:0,gp:0});x.rev+=rev;x.gp+=gp};
-const raw={},cl={};
-rows.forEach(r=>{const p=M[r.code],rev=r.qty*r.price;p?add(raw,p.cat,rev,rev-r.qty*p.erp):add(raw,"Unmapped",rev,rev)});
+const csv=t=>{const L=t.trim().split(/\r?\n/),h=L[0].split(",");return L.slice(1).map(l=>{const v=l.split(","),o={};h.forEach((k,i)=>o[k]=v[i]);return o})};
 const norm=c=>{const d=(c.match(/\d+/g)||[]).join("");return d?"NV-"+d:null};
-rows.forEach(r=>{r.c=norm(r.code);r.q=r.qty;r.pr=r.price;r.fl=[];const p=M[r.c];
+const M={},KEY={};let rows=[];
+const TAG={variant:"Code written differently",dz:"Counted in dozens",unitL:"Size in litres, not items",price10:"Price ten times too high",orphan:"Code not in the product list",neg:"Negative quantity"};
+const BADCELL={variant:["code","prod"],orphan:["code","prod"],dz:["qty","uom"],unitL:["qty","uom"],price10:["price"],neg:["qty"]};
+function prep(r){r.c=norm(r.code);r.q=r.qty;r.pr=r.price;r.fl=[];const p=M[r.c];
  if(!p){r.fl.push("orphan");r.rev=1;return}
  if(r.code!==r.c)r.fl.push("variant");
  if(r.uom==="DZ"){r.q*=12;r.fl.push("dz")}
  if(r.uom==="L"&&p.ml){r.q=Math.round(r.q*1000/p.ml);r.fl.push("unitL")}
  if(r.q<0){r.fl.push("neg");r.rev=1}
- const k=r.pr/p.price;if(k>9.5&&k<10.5){r.pr=p.price;r.fl.push("price10")}});
-let rq=0,rv=0;
-rows.forEach(r=>{if(r.rev){rq++;rv+=Math.abs(r.qty*r.price);return}const p=M[r.c],rev=r.q*r.pr;add(cl,p.cat,rev,rev-r.q*p.sup)});
-const cats=Object.keys(CAT),tot=o=>Object.values(o).reduce((a,x)=>({rev:a.rev+x.rev,gp:a.gp+x.gp}),{rev:0,gp:0});
-const TR=tot(raw),TC=tot(cl),um=raw["Unmapped"];
-const stale=P.filter(p=>Math.abs(p.erp-p.sup)/p.sup>.05),stalePl=P.filter(p=>p.erp!==p.sup);
-document.getElementById("big").innerHTML=
-`<div><b class="bad">${pc(TR.gp/TR.rev)}</b><span>profit margin in the raw report</span></div><div><b class="good">${pc(TC.gp/TC.rev)}</b><span>profit margin after cleaning</span></div>
-<div><b>KSh ${fmt(um.rev)}</b><span>of sales shown as pure profit in "Unmapped"</span></div><div><b>${rows.length.toLocaleString()}</b><span>sales lines checked</span></div>`;
-document.getElementById("cm").textContent=`Here, ${stale.length} products had a system cost ${Math.round(Math.min(...stale.map(p=>1-p.erp/p.sup))*100)}% to ${Math.round(Math.max(...stale.map(p=>1-p.erp/p.sup))*100)}% below the supplier's.`;
-let h=`<thead><tr><th>Category</th><th>Raw sales</th><th>Cleaned sales</th><th>Raw margin</th><th>Cleaned margin</th></tr></thead><tbody>`;
-cats.concat(["Unmapped"]).forEach(k=>{const a=raw[k]||{rev:0,gp:0},b=cl[k],gap=b?Math.abs(a.rev-b.rev)/b.rev>.05:true;
- h+=`<tr class="${k==="Unmapped"?"un":""}"><td>${k}</td><td class="${gap?"bad":""}">${fmt(a.rev)}</td><td>${b?fmt(b.rev):"0"}</td><td>${a.rev?pc(a.gp/a.rev):"n/a"}</td><td>${b?pc(b.gp/b.rev):"n/a"}</td></tr>`});
-document.getElementById("cmp").innerHTML+=h+`<tr class="tot"><td>Total</td><td>${fmt(TR.rev)}</td><td>${fmt(TC.rev)}</td><td>${pc(TR.gp/TR.rev)}</td><td>${pc(TC.gp/TC.rev)}</td></tr></tbody>`;
-const T=[["variant","Same product, code written differently","nv-1042, 1042-NV, NV1042","Sale can't be matched, so it drops out of its category"],
-["dz","Quantity counted in dozens","3 dozen recorded as 3","Items undercounted, costs understated"],
-["unitL","Size in a different unit","2 bottles of 500ml recorded as 1 litre","Quantity wrong, so cost is wrong"],
-["price10","Price keyed ten times too high","KSh 150 keyed as 1,500","Sales and profit inflated"],
-["orphan","Code not in the product list","NV-9381","Can't be put in any category"],
-["neg","Negative quantity with no return","-12 packs","Quietly shrinks sales"]];
-let d=`<thead><tr><th>Mistake</th><th class="l">Example</th><th class="l">What it does</th><th>Sales lines</th></tr></thead><tbody>`,s=`<thead><tr><th>Mistake</th><th>Added</th><th>Caught</th><th>Fixed exactly</th><th>Sent to a person</th></tr></thead><tbody>`,Pn=0,Cn=0,Fn=0;
-T.forEach(([k,l,e,ef])=>{const pl=rows.filter(r=>r.def===k),ca=pl.filter(r=>r.fl.includes(k)),fx=["variant","dz","unitL","price10"].includes(k);
- const ex=fx?pl.filter(r=>!r.rev&&r.c===r.tc&&r.q===r.tq&&r.pr===M[r.tc].price).length:"-";
- d+=`<tr><td>${l}</td><td class="l">${e}</td><td class="l">${ef}</td><td>${pl.length}</td></tr>`;
- s+=`<tr><td>${l}</td><td>${pl.length}</td><td>${ca.length}</td><td>${ex}</td><td>${pl.filter(r=>r.rev).length}</td></tr>`;Pn+=pl.length;Cn+=ca.length});
-d+=`<tr><td>Supplier cost differs from the system's cost</td><td class="l">System says KSh 80, supplier charges KSh 100</td><td class="l">Profit looks higher than it is</td><td>${stalePl.length} products</td></tr>`;
-s+=`<tr><td>Supplier cost differs from the system's cost (products)</td><td>${stalePl.length}</td><td>${stale.length}</td><td>${stale.length}</td><td>0</td></tr>`;
-rows.forEach(r=>{if(r.fl.length)Fn++});
-document.getElementById("defs").innerHTML=d+"</tbody>";document.getElementById("score").innerHTML=s+"</tbody>";
-const fxr=rows.filter(r=>["variant","dz","unitL","price10"].includes(r.def)),fxo=fxr.filter(r=>!r.rev&&r.c===r.tc&&r.q===r.tq&&r.pr===M[r.tc].price).length;
-document.getElementById("pr").innerHTML=`<div><b>${pc(Cn/Pn)}</b><span>of the mistakes were caught</span></div><div><b>${pc(Cn/Fn)}</b><span>of the flags were real mistakes</span></div><div><b>${pc(fxo/fxr.length)}</b><span>of fixable mistakes were corrected exactly</span></div><div><b>${rq}</b><span>lines sent to a person, worth KSh ${fmt(rv)}</span></div>`;
-const sel=document.getElementById("pick");P.forEach(p=>sel.add(new Option(p.name+" ("+p.code+")",p.code)));
-function mx(){const c=sel.value,cnt={};rows.filter(r=>r.tc===c&&r.def!=="orphan"&&r.def!=="neg").forEach(r=>cnt[r.code]=(cnt[r.code]||0)+1);
- document.getElementById("mx").innerHTML=`<thead><tr><th>Code as written</th><th>Lines</th><th>Matched to</th></tr></thead><tbody>`+Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td><td class="good">${c}</td></tr>`).join("")+"</tbody>"}
-sel.onchange=mx;mx();
-const gp=cats.map(k=>({k,g:(raw[k]?raw[k].rev:0)-cl[k].rev})).sort((a,b)=>Math.abs(b.g)-Math.abs(a.g))[0],low=cats.map(k=>({k,m:cl[k].gp/cl[k].rev})).sort((a,b)=>a.m-b.m)[0];
-document.getElementById("acts").innerHTML=
-`<div class="act"><b>Review pricing in ${low.k}</b>After cleaning, its margin is ${pc(low.m)}, the thinnest of the eight categories.</div>
-<div class="act"><b>Stop using the raw ${gp.k} figure</b>It differs from the cleaned figure by KSh ${fmt(Math.abs(gp.g))}, enough to change a stocking or promotion decision.</div>
-<div class="act"><b>Update ${stale.length} out-of-date costs</b>The system understates what these products cost, so their profit looks better than it is.</div>
-<div class="act"><b>Give the review list an owner</b>${rq} lines worth KSh ${fmt(rv)} couldn't be fixed safely. Assign them to whoever maintains the product list.</div>`;
+ const k=r.pr/p.price;if(k>9.5&&k<10.5){r.pr=p.price;r.fl.push("price10")}}
+async function load(){
+ const g=n=>fetch("data/"+n+".csv").then(r=>r.text());
+ const [a,b,c,d]=await Promise.all(["item_master","supplier_costs","branch_sales","answer_key"].map(g));
+ csv(a).forEach(o=>M[o.code]={name:o.name,price:+o.shelf_price,erp:+o.erp_cost,ml:+o.size_ml,sup:0});
+ csv(b).forEach(o=>M[o.code].sup=+o.supplier_cost);
+ rows=csv(c).map(o=>({id:+o.line_id,br:o.branch,code:o.product_code,qty:+o.qty,uom:o.uom,price:+o.unit_price}));
+ csv(d).forEach(o=>KEY[o.line_id]=o);rows.forEach(prep)}
+function metrics(k){let rev=0,gp=0,um=0;
+ for(const r of rows){const c=k>=1?r.c:r.code;let q=r.qty,pr=r.price;const p=M[c];
+  if(k>=2&&p){if(r.uom==="DZ")q*=12;if(r.uom==="L"&&p.ml)q=Math.round(q*1000/p.ml)}
+  if(k>=3&&p){const x=pr/p.price;if(x>9.5&&x<10.5)pr=p.price}
+  if(k>=5&&(!p||q<0))continue;
+  const s=q*pr;rev+=s;if(p)gp+=s-q*(k>=4?p.sup:p.erp);else{gp+=s;um+=s}}
+ return{m:gp/rev,um,rev}}
+function sample(){const o=[];["variant","dz","unitL","price10","orphan","neg"].forEach(t=>rows.filter(r=>KEY[r.id].defect===t&&r.fl.includes(t)).slice(0,2).forEach(r=>o.push(r)));
+ rows.filter(r=>!r.fl.length).slice(0,2).forEach(r=>o.push(r));return o.sort((a,b)=>a.id-b.id)}
+const unit=r=>r.uom==="DZ"?"dozens":r.uom==="L"?"litres":"items";
+function rawTable(){const S=sample();let h=`<thead><tr><th>Line</th><th>Branch</th><th>Product code</th><th>Product</th><th class="n">Quantity</th><th>Unit</th><th class="n">Price (KSh)</th><th>What's wrong</th></tr></thead><tbody>`;
+ S.forEach(r=>{const t=r.fl[0],bad=c=>t&&BADCELL[t].includes(c)?"bad":"",p=M[r.code];
+  h+=`<tr><td>${r.id}</td><td>${r.br}</td><td class="${bad("code")}">${r.code}</td><td class="${bad("prod")}">${p?p.name:"Not found"}</td><td class="n ${bad("qty")}">${r.qty}</td><td class="${bad("uom")}">${unit(r)}</td><td class="n ${bad("price")}">${r.price}</td><td>${t?TAG[t]:"None"}</td></tr>`});
+ $("t1").innerHTML=h+"</tbody>";return S}
+function cleanTable(S){let h=`<thead><tr><th>Line</th><th>Branch</th><th>Product code</th><th>Product</th><th class="n">Quantity (items)</th><th class="n">Price (KSh)</th><th>Result</th></tr></thead><tbody>`;
+ S.forEach(r=>{const p=M[r.c],cell=(now,was,ch)=>ch?`<td class="n ok">${now}<small>was ${was}</small></td>`:`<td class="n">${now}</td>`;
+  if(r.rev){h+=`<tr><td>${r.id}</td><td>${r.br}</td><td>${r.code}</td><td>${p?p.name:"Not found"}</td><td class="n">${r.qty}</td><td class="n">${r.price}</td><td class="warn">Sent to a person</td></tr>`;return}
+  const cc=r.c!==r.code;
+  h+=`<tr><td>${r.id}</td><td>${r.br}</td><td class="${cc?"ok":""}">${r.c}${cc?`<small>was ${r.code}</small>`:""}</td><td>${p.name}</td>${cell(r.q,r.qty+" "+unit(r),r.q!==r.qty||r.uom!=="EA")}${cell(r.pr,r.price,r.pr!==r.price)}<td>${r.fl.length?'<span class="ok">Fixed</span>':"Already fine"}</td></tr>`});
+ $("t3").innerHTML=h+"</tbody>"}
+const STEPS=[["Raw report","Each sale is matched to its product by exact code."],["Match every code","nv-1042, 1042-NV and NV1042 now find their product."],["Fix units","Dozens and litres become single items. Sales and costs move together, so the margin barely changes."],["Correct prices","Prices keyed ten times too high are put right."],["Use supplier costs","Out-of-date system costs are replaced."],["Set aside what can't be fixed","Unknown codes and negative quantities go to a person."]];
+function proof(){const pl=rows.filter(r=>KEY[r.id].defect),fl=rows.filter(r=>r.fl.length),hit=pl.filter(r=>r.fl.includes(KEY[r.id].defect));
+ const fx=pl.filter(r=>["variant","dz","unitL","price10"].includes(KEY[r.id].defect)),ex=fx.filter(r=>!r.rev&&r.c===KEY[r.id].true_code&&r.q===+KEY[r.id].true_qty&&r.pr===+KEY[r.id].true_price);
+ const rv=rows.filter(r=>r.rev),val=rv.reduce((a,r)=>a+Math.abs(r.qty*r.price),0);
+ $("proof").innerHTML=`<div><b>${pc(hit.length/pl.length)}</b><span>of the planted mistakes were caught</span></div><div><b>${pc(fl.filter(r=>KEY[r.id].defect).length/fl.length)}</b><span>of the flags were real mistakes</span></div><div><b>${pc(ex.length/fx.length)}</b><span>of fixable mistakes corrected exactly</span></div><div><b>${rv.length}</b><span>lines sent to a person, worth KSh ${fmt(val)}</span></div>`}
+function dl(id,name,head,list){const t=head+"\n"+list.join("\n");$(id).href=URL.createObjectURL(new Blob([t],{type:"text/csv"}));$(id).download=name}
+let S0=[];
+$("load").onclick=async()=>{$("load").disabled=true;$("load").textContent="Loading...";await load();const m=metrics(0);
+ $("k1").textContent=pc(m.m);$("k2").textContent="KSh "+fmt(m.um);$("k3").textContent="KSh "+fmt(m.rev);
+ S0=rawTable();$("load").textContent="Data loaded";$("s1").hidden=false;$("s1").scrollIntoView({behavior:"smooth"})};
+$("clean").onclick=()=>{$("clean").disabled=true;$("s2").hidden=false;$("s2").scrollIntoView({behavior:"smooth"});
+ let h=`<thead><tr><th>Step</th><th>What it does</th><th class="n">Profit margin</th><th class="n">Change</th><th class="n">Unmapped sales (KSh)</th><th class="n">Total sales (KSh)</th><th></th></tr></thead><tbody id="tb"></tbody>`;$("t2").innerHTML=h;
+ let k=0,prev=null;const run=()=>{const m=metrics(k),d=prev===null?"":((m.m-prev)*100).toFixed(1)+" pts";
+  $("tb").insertAdjacentHTML("beforeend",`<tr class="new"><td><b>${k?k+". ":""}${STEPS[k][0]}</b></td><td>${STEPS[k][1]}</td><td class="n"><b>${pc(m.m)}</b></td><td class="n ${prev!==null&&m.m<prev-.0005?"bad":""}">${d}</td><td class="n">${fmt(m.um)}</td><td class="n">${fmt(m.rev)}</td><td><div class="bar"><i style="width:${m.m/.45*100}%"></i></div></td></tr>`);
+  $("k1").textContent=pc(m.m);$("k1").className="";$("k2").textContent="KSh "+fmt(m.um);$("k3").textContent="KSh "+fmt(m.rev);
+  prev=m.m;k++;if(k<6)setTimeout(run,1200);else{$("k1").className="ok";$("again").hidden=false}};run()};
+$("reload").onclick=()=>{$("reload").disabled=true;cleanTable(S0);proof();
+ dl("d1","cleaned_sales.csv","line_id,branch,product_code,qty_items,unit_price",rows.filter(r=>!r.rev).map(r=>[r.id,r.br,r.c,r.q,r.pr].join(",")));
+ dl("d2","review_queue.csv","line_id,branch,product_code,qty,unit_price,reason",rows.filter(r=>r.rev).map(r=>[r.id,r.br,r.code,r.qty,r.price,r.fl.includes("orphan")?"unknown code":"negative quantity"].join(",")));
+ $("s3").hidden=false;$("s3").scrollIntoView({behavior:"smooth"})};
 </script>
 </body>
 </html>
