@@ -1,0 +1,41 @@
+code,name,category,shelf_price,erp_cost,size_ml
+NV-1000,Soda 500ml,Beverages,535,418,500
+NV-1001,Juice 1L,Beverages,336,271,1000
+NV-1002,Water 1.5L,Beverages,455,270,1500
+NV-1003,Soda 2L,Beverages,80,64,2000
+NV-1004,Tea 100s,Beverages,420,323,0
+NV-1005,Milk 500ml,Dairy,96,84,500
+NV-1006,Milk 1L,Dairy,394,339,1000
+NV-1007,Yoghurt 500ml,Dairy,249,175,500
+NV-1008,Butter 250g,Dairy,348,295,0
+NV-1009,Cheese 200g,Dairy,189,160,0
+NV-1010,Bread 400g,Bakery,498,371,0
+NV-1011,Bread 800g,Bakery,256,197,0
+NV-1012,Buns 6s,Bakery,60,40,0
+NV-1013,Cake slice,Bakery,359,266,0
+NV-1014,Doughnut,Bakery,552,380,0
+NV-1015,Cooking oil 1L,Cooking oils,183,165,1000
+NV-1016,Cooking oil 3L,Cooking oils,223,205,3000
+NV-1017,Margarine 500g,Cooking oils,429,316,0
+NV-1018,Ghee 500g,Cooking oils,136,124,0
+NV-1019,Cooking oil 5L,Cooking oils,93,83,5000
+NV-1020,Detergent 1kg,Household,243,179,0
+NV-1021,Bleach 750ml,Household,466,335,750
+NV-1022,Dish soap 500ml,Household,411,246,500
+NV-1023,Tissue 10s,Household,172,123,0
+NV-1024,Mop head,Household,195,144,0
+NV-1025,Soap bar,Personal care,415,259,0
+NV-1026,Lotion 400ml,Personal care,198,134,400
+NV-1027,Toothpaste 100ml,Personal care,176,90,100
+NV-1028,Shampoo 400ml,Personal care,298,180,400
+NV-1029,Deodorant,Personal care,66,42,0
+NV-1030,Crisps 100g,Snacks,599,422,0
+NV-1031,Biscuits 200g,Snacks,242,180,0
+NV-1032,Popcorn 150g,Snacks,583,332,0
+NV-1033,Nuts 250g,Snacks,332,239,0
+NV-1034,Chocolate 100g,Snacks,244,185,0
+NV-1035,Maize flour 2kg,Grains,121,111,0
+NV-1036,Rice 2kg,Grains,312,284,0
+NV-1037,Wheat flour 2kg,Grains,425,296,0
+NV-1038,Sugar 2kg,Grains,299,272,0
+NV-1039,Beans 1kg,Grains,485,447,0
